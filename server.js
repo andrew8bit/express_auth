@@ -9,6 +9,8 @@ app.use(require('morgan')('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 app.use(layouts);
+// Controllers
+app.use('/auth', require('./routes/auth'));
 
 app.get('/', (req, res) => {
   res.render('index');
@@ -18,7 +20,6 @@ app.get('/profile', (req, res) => {
   res.render('profile');
 });
 
-app.use('/auth', require('./routes/auth'));
 
 
 const PORT = process.env.PORT || 3000;
