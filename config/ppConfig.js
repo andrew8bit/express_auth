@@ -4,10 +4,10 @@ const LocalStrategy = require('passport-local').Strategy;
 // Database
 const db = require('../models');
 
-// Passport "serialize" info to be able to login 
+// Passport "serialize" info to be able to login
 passport.serializeUser((user, cb) => {
     cb(null, user.id);
-})
+});
 
 passport.deserializeUser((id, cb) => {
     db.user.findByPk(id)
@@ -15,10 +15,11 @@ passport.deserializeUser((id, cb) => {
         if (user) {
             cb(null, user);
         }
+        console.log('User is null...');
     })
-    .catch(err => {
-        console.log(`Yo... there is an error`)
-        console.log(err)
+    .catch(error => {
+        console.log('Yo... There is an error');
+        console.log(error);
     })
 })
 
@@ -27,19 +28,19 @@ passport.use(new LocalStrategy({
     passwordField: 'password'
 }, (email, password, cb) => {
     db.user.findOne({
-        where : { email }
+        where: { email }
     })
     .then(user => {
-        if(!user || !user.validPassword(password)) {
+        if (!user || !user.validPassword(password)) {
             cb(null, false);
         } else {
             cb(null, user);
         }
     })
     .catch(error => {
-        console.log('************************* Error');
-        console.log(error)
+        console.log('**************************** Error');
+        console.log(error);
     })
-})) 
+}));
 
-module.exports = passport; 
+module.exports = passport;
